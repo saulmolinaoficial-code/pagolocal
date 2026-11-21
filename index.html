@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagar a Tacos El Güero</title>
+  <style>
+    :root {
+      --primary: #0f172a;      /* Color principal del comercio */
+      --accent: #2563eb;       /* Color botones de acción */
+      --whatsapp: #16a34a;     /* Verde WhatsApp */
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 16px;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      height: fit-content;
+    }
+
+    /* Cabecera del Comercio */
+    .header { text-align: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px; }
+    .logo {
+      width: 72px; height: 72px;
+      background: var(--primary); color: white;
+      border-radius: 50%; margin: 0 auto 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold;
+    }
+    .biz-name { font-size: 20px; font-weight: 800; color: var(--primary); }
+    .biz-desc { font-size: 13px; color: #64748b; margin-top: 4px; }
+
+    /* Tarjeta de Transferencia / CLABE */
+    .transfer-box {
+      background: #f1f5f9;
+      border: 1px dashed #94a3b8;
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #475569; font-weight: 700; }
+    .bank-info { font-size: 14px; font-weight: 600; margin: 4px 0 10px; }
+    .clabe-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: white; padding: 10px 12px; border-radius: 10px;
+      border: 1px solid #cbd5e1;
+    }
+    .clabe-number { font-family: monospace; font-size: 15px; font-weight: 700; letter-spacing: 0.5px; }
+    
+    .btn-copy {
+      background: var(--primary); color: white; border: none;
+      padding: 8px 14px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: transform 0.1s;
+    }
+    .btn-copy:active { transform: scale(0.96); }
+
+    /* Botones de Acción */
+    .btn {
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      width: 100%; padding: 15px; border-radius: 12px;
+      font-size: 15px; font-weight: 700; text-decoration: none;
+      border: none; cursor: pointer; transition: opacity 0.2s;
+    }
+    .btn:active { opacity: 0.85; }
+    .btn-card { background: var(--accent); color: white; }
+    .btn-wa { background: var(--whatsapp); color: white; }
+
+    /* Input opcional de monto para WhatsApp */
+    .amount-group { display: flex; flex-direction: column; gap: 6px; }
+    .amount-input {
+      width: 100%; padding: 12px; border-radius: 10px;
+      border: 1px solid #cbd5e1; font-size: 16px; font-weight: 600;
+    }
+
+    /* Footer de tu agencia (Publicidad gratuita en cada escaneo) */
+    .footer {
+      text-align: center; font-size: 11px; color: #94a3b8;
+      margin-top: 8px; padding-top: 12px; border-top: 1px solid #f1f5f9;
+    }
+    .footer a { color: #64748b; text-decoration: none; font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 1. IDENTIDAD DEL COMERCIO -->
+  <div class="header">
+    <div class="logo" id="biz-initials">TG</div>
+    <h1 class="biz-name" id="biz-name">Tacos El Güero</h1>
+    <p class="biz-desc">Selecciona tu método de pago preferido</p>
+  </div>
+
+  <!-- 2. PAGO POR TRANSFERENCIA (SPEI / DIMO) -->
+  <div class="transfer-box">
+    <div class="label">1. Transferencia Bancaria (Sin comisión)</div>
+    <div class="bank-info" id="bank-details">BBVA • Juan Pérez López</div>
+    
+    <div class="clabe-row">
+      <span class="clabe-number" id="clabe-text">012180015489234567</span>
+      <button class="btn-copy" id="copy-btn" onclick="copiarClabe()">Copiar</button>
+    </div>
+  </div>
+
+  <!-- 3. PAGO CON TARJETA (LINK DE PAGO EXTERNO) -->
+  <div id="card-section">
+    <a href="#" id="card-link" target="_blank" class="btn btn-card">
+      💳 Pagar con Tarjeta Crédito / Débito
+    </a>
+  </div>
+
+  <!-- 4. CONFIRMACIÓN POR WHATSAPP -->
+  <div class="amount-group">
+    <div class="label">2. Confirma tu pago al vendedor</div>
+    <input type="number" id="monto-input" class="amount-input" placeholder="Monto pagado (Ej. 150) - Opcional">
+    <button onclick="enviarWhatsApp()" class="btn btn-wa">
+      📲 Enviar Comprobante por WhatsApp
+    </button>
+  </div>
+
+  <!-- 5. TU MARCA (CRECIMIENTO VIRAL EN LA COLONIA) -->
+  <div class="footer">
+    Sistema de cobro QR por <a href="https://wa.me/5215500000000?text=Hola,%20vi%20su%20sistema%20QR%20y%20lo%20quiero%20para%20mi%20negocio" target="_blank">TuMarcaQR</a>
+  </div>
+</div>
+
+<script>
+  // ==========================================
+  // CONFIGURACIÓN RÁPIDA DEL COMERCIO (EDITAR AQUÍ)
+  // ==========================================
+  const CONFIG = {
+    nombreComercio: "Tacos El Güero",
+    iniciales: "TG",
+    bancoYTitular: "BBVA • Juan Pérez López",
+    clabe: "012180015489234567",
+    telefonoWhatsApp: "5215512345678", // Código país (521 en México) + 10 dígitos
+    linkPagoTarjeta: "https://mpago.la/ejemplo", // Dejar vacío "" si el comercio no usa link de tarjeta
+    colorPrincipal: "#0f172a"
+  };
+
+  // Inicializar datos en la pantalla
+  document.title = "Pagar a " + CONFIG.nombreComercio;
+  document.getElementById("biz-name").innerText = CONFIG.nombreComercio;
+  document.getElementById("biz-initials").innerText = CONFIG.iniciales;
+  document.getElementById("bank-details").innerText = CONFIG.bancoYTitular;
+  document.getElementById("clabe-text").innerText = CONFIG.clabe;
+  document.documentElement.style.setProperty('--primary', CONFIG.colorPrincipal);
+
+  // Ocultar botón de tarjeta si el comercio no tiene link configurado
+  if (!CONFIG.linkPagoTarjeta) {
+    document.getElementById("card-section").style.display = "none";
+  } else {
+    document.getElementById("card-link").href = CONFIG.linkPagoTarjeta;
+  }
+
+  // Función de copiado en un toque
+  function copiarClabe() {
+    navigator.clipboard.writeText(CONFIG.clabe).then(() => {
+      const btn = document.getElementById("copy-btn");
+      btn.innerText = "¡Copiada!";
+      btn.style.background = "#16a34a";
+      setTimeout(() => {
+        btn.innerText = "Copiar";
+        btn.style.background = CONFIG.colorPrincipal;
+      }, 2500);
+    });
+  }
+
+  // Función para abrir WhatsApp con mensaje prellenado
+  function enviarWhatsApp() {
+    const monto = document.getElementById("monto-input").value;
+    let mensaje = `Hola *${CONFIG.nombreComercio}*, acabo de realizar un pago`;
+    if (monto) {
+      mensaje += ` por *$${monto} MXN*`;
+    }
+    mensaje += `. Aquí adjunto mi comprobante:`;
+    
+    const url = `https://wa.me/${CONFIG.telefonoWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+    window.open(url, "_blank");
+  }
+</script>
+
+</body>
+</html  
