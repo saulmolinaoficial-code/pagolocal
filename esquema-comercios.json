@@ -1,0 +1,46 @@
+{
+  "proyecto": "Pago Local",
+  "soporte": "Compuland MX",
+  "version": "1.0.0",
+  "hoja_google_sheets": "comercios",
+  "columnas": [
+    "slug",
+    "nombre_comercio",
+    "tema_visual",
+    "logo_personalizado",
+    "banco_titular",
+    "clabe",
+    "whatsapp",
+    "link_tarjeta",
+    "promo_texto",
+    "promo_link",
+    "activo",
+    "plan_soporte"
+  ],
+  "temas_disponibles": [
+    "luz",
+    "noche",
+    "geometrico",
+    "terra",
+    "menta",
+    "pop",
+    "cyber",
+    "aurora",
+    "titanio",
+    "solar"
+  ],
+  "ejemplo_registro": {
+    "slug": "panorama",
+    "nombre_comercio": "Panorama",
+    "tema_visual": "luz",
+    "logo_personalizado": "panorama",
+    "banco_titular": "BBVA Bancomer • Víctor Hugo Peña",
+    "clabe": "012180015489234567",
+    "whatsapp": "5215512345678",
+    "link_tarjeta": "",
+    "promo_texto": "",
+    "promo_link": "",
+    "activo": 1,
+    "plan_soporte": 1
+  }
+}
